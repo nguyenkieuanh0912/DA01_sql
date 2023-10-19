@@ -29,6 +29,10 @@ select name
 from Customer 
 where referee_id !=2 or referee_id is null;
 
+/* có thể thay referee_id !=2 or referee_id is null bàng coalesce(referee_id,'')<>2
+tức la thay giá trị null về giá trị rỗng sau đó mới so sánh với 2.
+null ở sql được hiẻu là ko có giá trị nên cần được chuyển về giá trị rỗng mới đi so sánh được với số/chuỗi khác */
+
 ex5
 select survived,
 sum(case
