@@ -6,11 +6,20 @@ INNER join CITY as b
 ON a.CODE =b.COUNTRYCODE
 GROUP BY a.CONTINENT
 
-ex2-- link không vào được
+ex2
+SELECT 
+ROUND(CAST(SUM(CASE 
+WHEN b.signup_action='Confirmed' THEN 1
+ELSE 0
+END) AS DECIMAL)/
+CAST(COUNT(DISTINCT a.user_id) AS DECIMAL), 2)
+FROM emails as a
+join texts as b
+on a.email_id=b.email_id;
 
-ex3 -- link không vào được
+ex3 
 
-ex4 -- link không vào được
+ex4 
 
 ex5
 select b.employee_id, b.name , count(*) as reports_count, ceiling(avg(a.age)) as average_age
@@ -65,7 +74,8 @@ from public.film as a
 join public.film_category as b on a.film_id=b.film_id
 join public.category as c on b.category_id=c.category_id
 where c.name in ('Drama','Sports')
-order by a.length desc ;
+order by a.length desc
+limit 10;
 
 câu hỏi 4
 select 
@@ -74,7 +84,8 @@ from public.film as a
 join public.film_category as b on a.film_id=b.film_id
 join public.category as c on b.category_id=c.category_id
 group by c.name
-order by count(a.title) desc ;
+order by count(a.title) desc 
+limit 10;
 
 câu hỏi 5
 select a.first_name, a.last_name, count(b.film_id)
@@ -82,7 +93,8 @@ from actor as a
 join film_actor as b
 on a.actor_id = b.actor_id
 group by a.first_name, a.last_name
-order by count(b.film_id) desc;
+order by count(b.film_id) desc
+limit 10;
 
 câu hỏi 6
 select count(*)
@@ -98,7 +110,8 @@ join public.address as b on a.city_id = b.city_id
 join public.customer as c on b.address_id=c.address_id
 join public.payment as d on c.customer_id=d.customer_id
 group by a.city
-order by sum(d.amount) desc;
+order by sum(d.amount) desc
+limit 10;
 
 câu hỏi 8 -- câu này mình ra kết quả giống câu 7
 select a.city || ', ' || e.country, sum(d.amount)
@@ -108,4 +121,5 @@ join public.customer as c on b.address_id= c.address_id
 join public.payment as d on c.customer_id= d.customer_id
 join public.country as e on a.country_id= e.country_id
 group by a.city || ', ' || e.country
-order by sum(d.amount) desc;
+order by sum(d.amount) desc
+limit 10;
