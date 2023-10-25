@@ -18,9 +18,38 @@ join texts as b
 on a.email_id=b.email_id;
 
 ex3 
+SELECT 
+a.age_bucket,
+round(sum(case
+when b.activity_type = 'send' then b.time_spent
+else 0 
+END)/sum(case 
+when b.activity_type in ('send','open') then b.time_spent
+else 0 
+END) * 100.0, 2) as send_perc,
+round(sum(case
+when b.activity_type = 'open' then b.time_spent
+else 0 
+END)/sum(case 
+when b.activity_type in ('send','open') then b.time_spent
+else 0 
+END)*100.0, 2) as open_perc
+FROM age_breakdown as a
+left join activities AS b 
+on a.user_id=b.user_id 
+group by a.age_bucket
+order by a.age_bucket; 
+
 
 ex4 
-
+SELECT a.customer_id
+FROM customer_contracts as a
+join products as b
+on a.product_id=b.product_id
+where left(b.product_name,5) ='Azure'
+having count(distinct b.product_category) = 3 
+GROUP BY a.customer_id;
+  
 ex5
 select b.employee_id, b.name , count(*) as reports_count, ceiling(avg(a.age)) as average_age
 from Employees as a
