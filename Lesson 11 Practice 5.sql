@@ -47,8 +47,8 @@ FROM customer_contracts as a
 join products as b
 on a.product_id=b.product_id
 where left(b.product_name,5) ='Azure'
-having count(distinct b.product_category) = 3 
-GROUP BY a.customer_id;
+GROUP BY a.customer_id
+having count(distinct b.product_category) = 3;
   
 ex5
 select b.employee_id, b.name , count(*) as reports_count, ceiling(avg(a.age)) as average_age
