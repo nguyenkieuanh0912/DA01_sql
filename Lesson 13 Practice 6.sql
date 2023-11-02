@@ -112,34 +112,27 @@ from Employees)
 order by employee_id;
 
 EX10
-select employee_id,
-case 
-when 
-employee_id in (select employee_id
-from Employee 
-group by employee_id
-having count(department_id)>=2) and primary_flag ='Y' then department_id
-when employee_id in (select employee_id
-from Employee 
-group by employee_id
-having count(department_id)=1) and primary_flag='N' then department_id
-end as department_id
-from Employee
-where (case 
-when 
-employee_id in (select employee_id
-from Employee 
-group by employee_id
-having count(department_id)>=2) and primary_flag ='Y' then department_id
-when employee_id in (select employee_id
-from Employee 
-group by employee_id
-having count(department_id)=1) and primary_flag='N' then department_id
-end) is not null 
+select employee_id, department_id from Employee where primary_flag ='Y'
+union
+select employee_id, department_id from Employee GROUP BY employee_id having count(department_id) =1;
+
 EX11
-
+select * from (select b.name as results from MovieRating a join Users b on a.user_id=b.user_id group by a.user_id order by count(a.rating) desc, b.name limit 1) as table_1
+union all
+select * from (select c.title from Movies c join MovieRating a on a.movie_id =c.movie_id  where extract(month from created_at) =2 and extract(year from created_at )=2020 group by c.title order by avg(a.rating) desc, c.title limit 1) as table_2;
+  
 EX12
-
+with cte1 as 
+(select * from (select requester_id as id, accepter_id as friend from RequestAccepted
+order by requester_id, accepter_id) as t1
+union all 
+select * from (select accepter_id as id, requester_id as friend from RequestAccepted
+order by accepter_id, requester_id) as t2)
+select distinct id, count(friend) as num
+from cte1
+group by id
+order by count(friend) desc 
+limit 1 
 
 
 
