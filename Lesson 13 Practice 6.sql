@@ -95,11 +95,47 @@ where a.product_id=b.product_id
 group by product_id);
   
 EX8
-
+select customer_id
+from Customer
+group by customer_id
+having count(distinct product_key) = 
+(select count(distinct product_key)
+from Product);
+  
 EX9
+select employee_id
+from Employees
+where salary<30000
+and manager_id is not null 
+and manager_id not in (select employee_id
+from Employees)
+order by employee_id;
 
 EX10
-
+select employee_id,
+case 
+when 
+employee_id in (select employee_id
+from Employee 
+group by employee_id
+having count(department_id)>=2) and primary_flag ='Y' then department_id
+when employee_id in (select employee_id
+from Employee 
+group by employee_id
+having count(department_id)=1) and primary_flag='N' then department_id
+end as department_id
+from Employee
+where (case 
+when 
+employee_id in (select employee_id
+from Employee 
+group by employee_id
+having count(department_id)>=2) and primary_flag ='Y' then department_id
+when employee_id in (select employee_id
+from Employee 
+group by employee_id
+having count(department_id)=1) and primary_flag='N' then department_id
+end) is not null 
 EX11
 
 EX12
