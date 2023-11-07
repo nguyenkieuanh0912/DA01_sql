@@ -27,6 +27,16 @@ round(number_of_consecutive_player/number_of_player,2) as fraction
 from cte1
 
 EX3:
+with cte as
+(select *,
+case
+when (id % 2) <> 0 then lead(student) over(order by id)
+when (id % 2) = 0 then lag(student) over(order by id)
+end as new_student
+from Seat)
+select id, 
+coalesce (new_student,student) as student
+from cte
 
 EX4:
 
