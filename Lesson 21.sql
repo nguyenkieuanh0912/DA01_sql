@@ -87,15 +87,16 @@ order by month_year
 
 
 ---5.Doanh thu tính đến thời điểm hiện tại trên mỗi danh mục
-select dates, product_categories, round(sum (retail_price),2) as revenue
+select dates, product_categories, round(sum (sale_price),2) as revenue
 from
 (
 select 
   date(a.created_at) as dates, 
   b.category as product_categories, 
-  b.retail_price
+  a.sale_price
 from bigquery-public-data.thelook_ecommerce.order_items as a
 join bigquery-public-data.thelook_ecommerce.products b on a.product_id=b.id
 where cast(a.created_at as date) between date_add('2022-04-15', interval -90 day) and cast ('2022-04-15' as date)
 ) as a
 group by dates, product_categories
+order by dates, product_categories
