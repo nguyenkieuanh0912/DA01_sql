@@ -77,3 +77,5 @@ from cte
 where index between 1 and 4
 group by cohort_date, index
 order by cohort_date, index
+---link Google Sheets chứa bảng cohort
+https://docs.google.com/spreadsheets/d/1r8dpR-cxjGgM-k4Ac4n3otnMM15Rh88xCRMdekoQDQg/edit?usp=sharing
