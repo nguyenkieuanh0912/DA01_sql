@@ -59,3 +59,21 @@ order by a.category, a.month_year
 ;
 
 ---2. Tạo retention cohort analysis.
+with cte as
+(
+select
+user_id, 
+FORMAT_DATE('%Y-%m', created_at) as cohort_date,
+(extract(year from created_at) - extract(year from first_purchase_date))*12 +
+extract(month from created_at) - extract(month from first_purchase_date) +1 as index
+from
+(
+SELECT created_at, user_id,
+min(created_at) over (partition by user_id) as first_purchase_date
+FROM `bigquery-public-data.thelook_ecommerce.orders` 
+order by user_id, date(created_at)) a)
+select cohort_date, index, count(distinct user_id) as number_of_customer
+from cte
+where index between 1 and 4
+group by cohort_date, index
+order by cohort_date, index
